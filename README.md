@@ -97,7 +97,11 @@ docker run --rm \
 ./vendor/bin/sail down
 ```
 
+### Criação de alias sail
 
+```
+alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
+```
 
 ## 🛠️ Tecnologias Utilizadas
 
