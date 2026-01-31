@@ -3,6 +3,8 @@
 namespace App\Livewire;
 
 use App\Models\Request;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -26,11 +28,16 @@ class RequestList extends Component
         $this->resetPage();
     }
 
+    #[On('request-cancelled')]
+    public function refreshList()
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
         $requests = Request::query()
-            ->where('user_id', 1)
+            ->where('user_id', Auth::user()->id)
             ->when($this->status !== 'all', fn($query) =>
                 $query->where('status', $this->status)
             )

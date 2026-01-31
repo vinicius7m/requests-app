@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Request;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class CreateRequest extends Component
@@ -28,7 +29,7 @@ class CreateRequest extends Component
             'title' => $this->title,
             'description' => $this->description,
             'category' => $this->category,
-            'user_id' => 1,
+            'user_id' => Auth::user()->id,
         ]);
 
         $this->reset();

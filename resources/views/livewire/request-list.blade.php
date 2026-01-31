@@ -6,22 +6,20 @@
         <option value="open">Abertas</option>
         <option value="approved">Aprovadas</option>
         <option value="rejected">Rejeitadas</option>
+        <option value="cancelled">Canceladas</option>
     </select>
 
     <p>Status atual: {{ $status }}</p>
-
+    <p>{{ $requests->count() }}</p>
 
     @if($requests->count())
         <ul class="space-y-2">
             @foreach($requests as $request)
-                <p>{{ $requests->count() }}</p>
-                <li class="border p-3 rounded">
-                    <strong>{{ $request->title }}</strong>
-                    <p>{{ $request->description }}</p>
-                    <span class="text-sm text-gray-500">
-                        {{ ucfirst($request->status) }}
-                    </span>
-                </li>
+                {{-- Chamada do componente --}}
+                <livewire:request-item
+                    :request="$request"
+                    :key="$request->id"
+                />
             @endforeach
         </ul>
 
