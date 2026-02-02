@@ -8,7 +8,7 @@ use Livewire\Component;
 
 class CreateRequest extends Component
 {
-    public string $title = ''; // o front ele só reflete esse estado
+    public string $title = ''; // o front só reflete esse estado
     public string $description = '';
     public string $category = '';
 

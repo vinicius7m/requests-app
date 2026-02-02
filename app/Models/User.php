@@ -46,6 +46,11 @@ class User extends Authenticatable
         ];
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
+    }
+
     public function request()
     {
         return $this->hasMany(Request::class);

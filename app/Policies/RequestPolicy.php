@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\RequestStatus;
 use App\Models\Request;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -12,7 +13,12 @@ class RequestPolicy
     public function cancel(User $user, Request $request): bool
     {
         return $request->user_id === $user->id
-            && $request->status === 'open';
+            && $request->status === RequestStatus::OPEN;
+    }
+
+    public function manage(User $user): bool
+    {
+        return $user->isAdmin();
     }
 
     /**
