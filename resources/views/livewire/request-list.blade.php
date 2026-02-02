@@ -1,3 +1,4 @@
+<div class="max-w-5xl mx-auto px-4 py-6">
 <div class="space-y-6">
 
     {{-- CABEÇALHO --}}
@@ -43,4 +44,5 @@
         </div>
     @endif
 
+</div>
 </div>
