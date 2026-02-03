@@ -33,6 +33,13 @@ class RequestList extends Component
         $this->resetPage();
     }
 
+    #[On('request-reviewed')]
+    public function refresh()
+    {
+        $this->resetPage();
+    }
+
+
     public function render()
     {
         // $isAdmin = $this->authorize('manage', Auth::user());

@@ -48,7 +48,7 @@
 
                 @can('manage', $request)
                     <button
-                        wire:click="finalize"
+                        wire:click="openApproveModal"
                         class="inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 font-medium"
                     >
                         {{-- ícone check --}}
@@ -61,7 +61,7 @@
                     </button>
 
                     <button
-                        wire:click="finalize"
+                        wire:click="openRejectModal"
                         class="inline-flex items-center gap-1 text-sm text-red-600 hover:text-red-700 font-medium"
                     >
                         {{-- ícone check --}}
@@ -109,4 +109,42 @@
             </div>
         </div>
     @endif
+
+    @if($showReviewModal)
+        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-6 w-full max-w-md">
+                <h2 class="text-lg font-semibold mb-2">
+                    {{ $action === 'approve' ? 'Aprovar solicitação' : 'Rejeitar solicitação' }}
+                </h2>
+
+                <textarea
+                    wire:model.defer="comment"
+                    class="w-full border rounded p-2 text-sm"
+                    rows="3"
+                    placeholder="Comentário (opcional para aprovação)"
+                ></textarea>
+
+                @error('comment')
+                    <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
+                @enderror
+
+                <div class="flex justify-end gap-2 mt-4">
+                    <button
+                        wire:click="$set('showReviewModal', false)"
+                        class="px-4 py-2 border rounded"
+                    >
+                        Cancelar
+                    </button>
+
+                    <button
+                        wire:click="confirmReview"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded"
+                    >
+                        Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
 </li>

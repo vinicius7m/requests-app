@@ -37,7 +37,7 @@ class Request extends Model
         ]);
     }
 
-    public function approve(): void
+    public function approve(?string $reason = null): void
     {
         if ($this->status !== RequestStatus::OPEN) {
             throw new DomainException('Solicitação não pode ser aprovada.');
@@ -45,10 +45,11 @@ class Request extends Model
 
         $this->update([
             'status' => RequestStatus::APPROVED,
+            'reason' => $reason
         ]);
     }
 
-    public function reject(): void
+    public function reject(string $reason): void
     {
         if ($this->status !== RequestStatus::OPEN) {
             throw new DomainException('Solicitação não pode ser rejeitada.');
@@ -56,6 +57,7 @@ class Request extends Model
 
         $this->update([
             'status' => RequestStatus::REJECTED,
+            'reason' => $reason
         ]);
     }
 

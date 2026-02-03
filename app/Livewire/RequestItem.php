@@ -13,9 +13,27 @@ class RequestItem extends Component
     public Request $request;
     public bool $showConfirmModal = false;
 
+    public bool $showReviewModal = false;
+    public string $action = '';
+    public string $reason = '';
+
     public function openCancelModal(): void
     {
         $this->showConfirmModal = true;
+    }
+
+    public function openApproveModal(): void
+    {
+        $this->action = 'approve';
+        $this->reason = '';
+        $this->showReviewModal = true;
+    }
+
+    public function openRejectModal(): void
+    {
+        $this->action = 'reject';
+        $this->reason = '';
+        $this->showReviewModal = true;
     }
 
     public function cancel()
@@ -33,18 +51,25 @@ class RequestItem extends Component
     {
         $this->authorize('manage', $this->request);
 
-        $this->request->approve();
+        if($this->action === 'reject') {
+            $this->validate([
+                'reason' => 'required|min:5',
+            ]);
 
-        $this->dispatch('toast', message: 'Solicitação aprovada com sucesso!');
-    }
+            $this->request->reject($this->reason);
 
-    public function reject()
-    {
-        $this->authorize('manage', $this->request);
+            $message = 'Solicitação rejeitada com sucesso!';
+        }else {
 
-        $this->request->reject();
+            $this->request->approve($this->reason);
 
-        $this->dispatch('toast', message: 'Solicitação rejeitada com sucesso!');
+            $message = 'Solicitação aprovada com sucesso!';
+        }
+
+        $this->showReviewModal = false;
+
+        $this->dispatch('request-reviewed');
+        $this->dispatch('toast', message: $message);
     }
 
     public function render()
