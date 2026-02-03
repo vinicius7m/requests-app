@@ -22,8 +22,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('category');
             $table->string('status')->default('open');
-
-
+            $table->string('reason')->nullable();
 
             $table->timestamps();
         });

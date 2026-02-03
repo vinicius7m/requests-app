@@ -32,9 +32,12 @@ class CreateRequest extends Component
             'user_id' => Auth::user()->id,
         ]);
 
-        $this->reset();
-
-        session()->flash('success', 'Solicitação criada com sucesso!');
+        return redirect()
+            ->route('request.list')
+            ->with('toast', [
+                'message' => 'Solicitação criada com sucesso!',
+                'type' => 'success'
+            ]);
     }
 
     public function render()

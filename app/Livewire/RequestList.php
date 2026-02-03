@@ -10,7 +10,6 @@ use Livewire\WithPagination;
 
 class RequestList extends Component
 {
-
     use WithPagination;
 
     public string $status = 'all';
@@ -36,8 +35,13 @@ class RequestList extends Component
 
     public function render()
     {
+        // $isAdmin = $this->authorize('manage', Auth::user());
+        $isAdmin = Auth::user()->can('manage', Auth::user());
+
         $requests = Request::query()
-            ->where('user_id', Auth::user()->id)
+            ->when($isAdmin, fn($query) =>
+                $query->where('user_id', Auth::user()->id)
+            )
             ->when($this->status !== 'all', fn($query) =>
                 $query->where('status', $this->status)
             )

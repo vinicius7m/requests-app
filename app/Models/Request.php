@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Enums\RequestCategory;
 use App\Enums\RequestStatus;
 use DomainException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Request extends Model
 {
@@ -21,6 +23,7 @@ class Request extends Model
 
     protected $casts = [
         'status' => RequestStatus::class,
+        'category' => RequestCategory::class,
     ];
 
     public function cancel(): void

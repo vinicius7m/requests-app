@@ -11,6 +11,14 @@
                 {{ $request->description }}
             </p>
 
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                Autor: {{ $request->user()->first()->name }}
+            </p>
+
+            <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                Categoria: {{ $request->category->label() }}
+            </p>
+
             {{-- STATUS --}}
             <span
                 class="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full
@@ -23,31 +31,48 @@
         {{-- AÇÕES --}}
         @if ($request->status->value === 'open')
             <div class="flex flex-col gap-2 items-end">
-                <button
-                    wire:click="openCancelModal"
-                    class="inline-flex items-center gap-1 text-sm text-red-600 hover:text-red-700 font-medium"
-                >
-                    {{-- ícone X --}}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    Cancelar
-                </button>
+                @can('cancel', $request)
+                    <button
+                        wire:click="openCancelModal"
+                        class="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-gray-700 font-medium"
+                    >
+                        {{-- ícone X --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Cancelar
+                    </button>
+                @endcan
 
-                <button
-                    wire:click="finalize"
-                    class="inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 font-medium"
-                >
-                    {{-- ícone check --}}
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M5 13l4 4L19 7" />
-                    </svg>
-                    Finalizar
-                </button>
+                @can('manage', $request)
+                    <button
+                        wire:click="finalize"
+                        class="inline-flex items-center gap-1 text-sm text-green-600 hover:text-green-700 font-medium"
+                    >
+                        {{-- ícone check --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M5 13l4 4L19 7" />
+                        </svg>
+                        Aprovar
+                    </button>
+
+                    <button
+                        wire:click="finalize"
+                        class="inline-flex items-center gap-1 text-sm text-red-600 hover:text-red-700 font-medium"
+                    >
+                        {{-- ícone check --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Reprovar
+                    </button>
+                @endcan
             </div>
         @endif
     </div>

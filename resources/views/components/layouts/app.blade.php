@@ -43,6 +43,17 @@
         <span x-text="message"></span>
     </div>
 
+    @if (session()->has('toast'))
+        <script>
+            window.addEventListener('load', () => {
+                window.dispatchEvent(new CustomEvent('toast', {
+                    detail: @json(session('toast'))
+                }))
+            })
+        </script>
+    @endif
+
+
 
     @livewireScripts
 </body>
