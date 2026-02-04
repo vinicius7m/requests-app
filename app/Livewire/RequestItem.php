@@ -47,7 +47,7 @@ class RequestItem extends Component
         $this->dispatch('toast', message: 'Solicitação cancelada com sucesso!');
     }
 
-    public function approve()
+    public function confirmReview()
     {
         $this->authorize('manage', $this->request);
 
@@ -60,7 +60,6 @@ class RequestItem extends Component
 
             $message = 'Solicitação rejeitada com sucesso!';
         }else {
-
             $this->request->approve($this->reason);
 
             $message = 'Solicitação aprovada com sucesso!';

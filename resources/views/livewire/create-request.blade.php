@@ -61,7 +61,7 @@
                     wire:loading.attr="disabled"
                     type="submit"
                     class="inline-flex items-center gap-2 px-6 py-2.5
-                        bg-blue-600 hover:bg-blue-700
+                        bg-indigo-600 hover:bg-indigo-700
                         text-white font-medium rounded-lg
                         transition
                         opacity-100 wire:loading:opacity-70"

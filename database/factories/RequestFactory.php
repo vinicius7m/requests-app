@@ -17,11 +17,14 @@ class RequestFactory extends Factory
      */
     public function definition(): array
     {
+        $status = fake()->randomElement(['open', 'approved', 'rejected']);
+
         return [
             'title' => fake()->sentence(4),
             'description' => fake()->paragraph(),
             'category' => fake()->randomElement(['ti', 'financeiro', 'manutencao']),
-            'status' => fake()->randomElement(['open', 'approved', 'rejected']),
+            'status' => $status,
+            'reason' => in_array($status, ['approved', 'rejected']) ? fake()->sentence(12) : null,
             'user_id' => User::inRandomOrder()->first()->id,
         ];
     }

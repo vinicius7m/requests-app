@@ -26,6 +26,46 @@
             >
                 ● {{ $request->status->label() }}
             </span>
+
+            {{-- MOTIVO (APROVADO / REJEITADO) --}}
+            @if(in_array($request->status->value, ['approved', 'rejected']) && $request->reason)
+                <div
+                    x-data="{ open: false }"
+                    class="mt-3"
+                >
+                    <button
+                        @click="open = !open"
+                        class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
+                    >
+                        <svg
+                            class="w-4 h-4 transition-transform"
+                            :class="{ 'rotate-90': open }"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 5l7 7-7 7" />
+                        </svg>
+
+                        {{ $request->status->value === 'approved'
+                            ? 'Ver motivo da aprovação'
+                            : 'Ver motivo da rejeição' }}
+                    </button>
+
+                    <div
+                        x-show="open"
+                        x-transition
+                        x-cloak
+                        class="mt-2 rounded-lg bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 p-3"
+                    >
+                        <p class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-line">
+                            {{ $request->reason }}
+                        </p>
+                    </div>
+                </div>
+            @endif
+
         </div>
 
         {{-- AÇÕES --}}
@@ -111,20 +151,20 @@
     @endif
 
     @if($showReviewModal)
-        <div class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div class="bg-white rounded-lg p-6 w-full max-w-md">
+        <div class="fixed inset-0 bg-slate-900/70 flex items-center justify-center z-50">
+            <div class="bg-slate-800 text-slate-100 rounded-lg p-6 w-full max-w-md">
                 <h2 class="text-lg font-semibold mb-2">
                     {{ $action === 'approve' ? 'Aprovar solicitação' : 'Rejeitar solicitação' }}
                 </h2>
 
                 <textarea
-                    wire:model.defer="comment"
-                    class="w-full border rounded p-2 text-sm"
+                    wire:model.defer="reason"
+                    class="w-full rounded-lg bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 text-sm p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     rows="3"
                     placeholder="Comentário (opcional para aprovação)"
                 ></textarea>
 
-                @error('comment')
+                @error('reason')
                     <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
                 @enderror
 

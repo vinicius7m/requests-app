@@ -23,7 +23,7 @@
                 <option value="cancelled">Canceladas</option>
             </select>
             <a href="{{ route('request.create') }}"
-                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
 
                 <svg xmlns="http://www.w3.org/2000/svg"
                     class="h-5 w-5"
