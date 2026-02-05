@@ -42,11 +42,10 @@ class RequestList extends Component
 
     public function render()
     {
-        // $isAdmin = $this->authorize('manage', Auth::user());
         $isAdmin = Auth::user()->can('manage', Auth::user());
 
         $requests = Request::query()
-            ->when($isAdmin, fn($query) =>
+            ->when(!$isAdmin, fn($query) =>
                 $query->where('user_id', Auth::user()->id)
             )
             ->when($this->status !== 'all', fn($query) =>
