@@ -13,8 +13,6 @@ Criar um sistema que centralize solicitações, oferecendo:
 - Organização do fluxo do lado do usuário e do lado administrativo
 
 - Base sólida para evoluir regras de negócio, status, permissões e relatórios
-Perfeito 👍
-Segue um trecho **pronto para adicionar ao README**, com uma seção clara de **Como inicializar o projeto**, usando Sail (Docker), no padrão profissional.
 
 ---
 
