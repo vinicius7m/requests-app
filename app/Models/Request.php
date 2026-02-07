@@ -7,7 +7,6 @@ use App\Enums\RequestStatus;
 use App\Exceptions\DomainException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 class Request extends Model
 {
@@ -18,7 +17,8 @@ class Request extends Model
         'description',
         'category',
         'user_id',
-        'status'
+        'status',
+        'reason',
     ];
 
     protected $casts = [
@@ -49,11 +49,16 @@ class Request extends Model
         ]);
     }
 
-    public function reject(string $reason): void
+    public function reject(?string $reason = null): void
     {
         if ($this->status !== RequestStatus::OPEN) {
             throw new DomainException('Solicitação não pode ser rejeitada.');
         }
+
+        if (empty($reason)) {
+            throw new DomainException('Motivo da rejeição é obrigatório.');
+        }
+
 
         $this->update([
             'status' => RequestStatus::REJECTED,

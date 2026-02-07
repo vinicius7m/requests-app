@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\RequestStatus;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -17,15 +18,30 @@ class RequestFactory extends Factory
      */
     public function definition(): array
     {
-        $status = fake()->randomElement(['open', 'approved', 'rejected']);
-
         return [
             'title' => fake()->sentence(4),
             'description' => fake()->paragraph(),
             'category' => fake()->randomElement(['ti', 'financeiro', 'manutencao']),
-            'status' => $status,
-            'reason' => in_array($status, ['approved', 'rejected']) ? fake()->sentence(12) : null,
-            'user_id' => User::inRandomOrder()->first()->id,
+            'status' => RequestStatus::OPEN,
+            'reason' => null,
+            'user_id' => User::factory(),
         ];
     }
+
+    public function approved(): static
+    {
+        return $this->state(fn () => [
+            'status' => RequestStatus::APPROVED,
+            'reason' => fake()->sentence(),
+        ]);
+    }
+
+    public function rejected(): static
+    {
+        return $this->state(fn () => [
+            'status' => RequestStatus::REJECTED,
+            'reason' => fake()->sentence(),
+        ]);
+    }
+
 }

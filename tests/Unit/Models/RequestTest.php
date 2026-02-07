@@ -6,7 +6,7 @@ use App\Enums\RequestStatus;
 use App\Exceptions\DomainException;
 use App\Models\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class RequestTest extends TestCase
 {
@@ -25,8 +25,9 @@ class RequestTest extends TestCase
 
     public function test_request_cannot_be_cancelled_when_not_open()
     {
-        $request = Request::factory()->create([
+        $request = Request::factory()->approved()->create([
             'status' => RequestStatus::APPROVED,
+            'reason' => null,
         ]);
 
         $this->expectException(DomainException::class);
@@ -51,7 +52,7 @@ class RequestTest extends TestCase
 
     public function test_request_cannot_be_approved_if_not_open(): void
     {
-        $request = Request::factory()->create([
+        $request = Request::factory()->rejected()->create([
             'status' => RequestStatus::REJECTED,
         ]);
 
@@ -75,7 +76,7 @@ class RequestTest extends TestCase
 
     public function test_request_cannot_be_rejected_if_not_open(): void
     {
-        $request = Request::factory()->create([
+        $request = Request::factory()->approved()->create([
             'status' => RequestStatus::APPROVED,
         ]);
 
@@ -86,10 +87,11 @@ class RequestTest extends TestCase
     public function test_request_cannot_be_rejected_without_reason(): void
     {
         $request = Request::factory()->create([
-            'status' => RequestStatus::APPROVED,
+            'status' => RequestStatus::OPEN,
         ]);
 
         $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Motivo da rejeição é obrigatório.');
         $request->reject();
     }
 
