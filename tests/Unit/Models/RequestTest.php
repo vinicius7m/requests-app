@@ -3,6 +3,7 @@
 namespace Tests\Unit\Models;
 
 use App\Enums\RequestStatus;
+use App\Exceptions\DomainException;
 use App\Models\Request;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\TestCase;
@@ -72,24 +73,24 @@ class RequestTest extends TestCase
         $this->assertEquals($request->status, RequestStatus::REJECTED);
     }
 
-    // public function test_request_cannot_be_rejected_if_not_open(): void
-    // {
-    //     $request = Request::factory()->create([
-    //         'status' => RequestStatus::APPROVED,
-    //     ]);
+    public function test_request_cannot_be_rejected_if_not_open(): void
+    {
+        $request = Request::factory()->create([
+            'status' => RequestStatus::APPROVED,
+        ]);
 
-    //     expect(fn () => $request->reject('x'))
-    //         ->toThrow(DomainException::class);
-    // }
+        $this->expectException(DomainException::class);
+        $request->reject('x');
+    }
 
-    // public function test_request_cannot_be_rejected_without_reason(): void
-    // {
-    //     $request = Request::factory()->create([
-    //         'status' => RequestStatus::APPROVED,
-    //     ]);
+    public function test_request_cannot_be_rejected_without_reason(): void
+    {
+        $request = Request::factory()->create([
+            'status' => RequestStatus::APPROVED,
+        ]);
 
-    //     expect(fn () => $request->reject('x'))
-    //         ->toThrow(DomainException::class);
-    // }
+        $this->expectException(DomainException::class);
+        $request->reject();
+    }
 
 }
