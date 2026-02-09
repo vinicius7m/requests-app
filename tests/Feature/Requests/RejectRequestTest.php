@@ -3,9 +3,11 @@
 namespace Tests\Feature\Requests;
 
 use App\Enums\RequestStatus;
+use App\Livewire\RequestItem;
 use App\Models\Request;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use Tests\TestCase;
 
 class RejectRequestTest extends TestCase
@@ -13,26 +15,23 @@ class RejectRequestTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_can_reject_open_request_with_reason(): void
+    public function test_admin_can_reject_request(): void
     {
-        $user = User::factory()->create();
-
+        $admin = User::factory()->create(['is_admin' => true]);
         $request = Request::factory()->create([
             'status' => RequestStatus::OPEN,
         ]);
 
-        $response = $this
-            ->actingAs($user)
-            ->postJson("/requests/{$request->id}/reject", [
-                'reason' => 'Documento inválido',
-            ]);
-
-        $response->assertOk();
+        Livewire::actingAs($admin)
+            ->test(RequestItem::class, ['request' => $request])
+            ->call('openRejectModal')
+            ->set('reason', 'Reprovado pelo gestor')
+            ->call('confirmReview');
 
         $this->assertDatabaseHas('requests', [
             'id' => $request->id,
-            'status' => RequestStatus::REJECTED->value,
-            'reason' => 'Documento inválido',
+            'status' => RequestStatus::REJECTED,
+            'reason' => 'Reprovado pelo gestor',
         ]);
     }
 }

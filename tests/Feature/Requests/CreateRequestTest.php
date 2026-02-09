@@ -6,12 +6,12 @@ use App\Enums\RequestStatus;
 use App\Livewire\CreateRequest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Livewire\Livewire;
 use Tests\TestCase;
 
 class CreateRequestTest extends TestCase
 {
+    use RefreshDatabase;
     /** @test */
     public function user_can_create_request(): void
     {
