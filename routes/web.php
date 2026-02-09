@@ -14,9 +14,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/request', RequestList::class)->name('request.list');
-    Route::get('/request/create', CreateRequest::class)->name('request.create');
+    Route::prefix('requests')
+    ->name('requests.')
+    ->group(function () {
 
+        Route::get('/', RequestList::class)->name('list');
+        Route::get('create', CreateRequest::class)->name('create');
+    });
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

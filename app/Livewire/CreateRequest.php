@@ -33,7 +33,7 @@ class CreateRequest extends Component
         ]);
 
         return redirect()
-            ->route('request.list')
+            ->route('requests.list')
             ->with('toast', [
                 'message' => 'Solicitação criada com sucesso!',
                 'type' => 'success'
